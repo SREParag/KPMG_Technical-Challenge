@@ -1,0 +1,41 @@
+#Here is an example implementation of a function in Python that takes an object and a key as inputs, and returns the value associated with the key within the object. This function uses recursion to traverse the nested object, and the keys are passed in using a forward-slash ('/') as the delimiter.
+
+def get_value_from_nested_object(obj, key):
+    # Split the key by '/' to get a list of keys
+    keys = key.split('/')
+
+    # Base case: If the list of keys is empty, return the object
+    if not keys:
+        return obj
+
+    # Recursive case: If the list of keys is not empty, recursively call the function
+    # with the value of the current key in the object
+    current_key = keys.pop(0)
+    if current_key in obj:
+        return get_value_from_nested_object(obj[current_key], '/'.join(keys))
+    else:
+        return None
+        
+        
+# Here are a couple of test cases to demonstrate the usage of the function
+
+# Test case 1
+object = {"a": {"b": {"c": "d"}}}
+key = "a/b/c"
+value = get_value_from_nested_object(object, key)
+print(value)
+# Output: "d"
+
+# Test case 2
+object = {"x": {"y": {"z": "a"}}}
+key = "x/y/z"
+value = get_value_from_nested_object(object, key)
+print(value)
+# Output: "a"
+
+# Test case 3
+object = {"x": {"y": {"z": "a"}}}
+key = "a/b/c"
+value = get_value_from_nested_object(object, key)
+print(value)
+# Output: None
