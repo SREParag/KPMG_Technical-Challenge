@@ -1,0 +1,18 @@
+#To query the metadata of an instance within Google Cloud Platform (GCP)
+#We can use the metadata service provided by the Compute Engine API. 
+#We can access the metadata of an instance by making an HTTP GET request to the metadata server's endpoint at http://metadata.google.internal/computeMetadata/v1/.
+
+
+import requests
+
+# Set the headers for the metadata server
+headers = {'Metadata-Flavor': 'Google'}
+
+# Make a GET request to the metadata server to retrieve the instance's metadata
+response = requests.get('http://metadata.google.internal/computeMetadata/v1/', headers=headers)
+
+# Print the metadata in JSON format
+print(response.json())
+
+#We can also query specific fields within the metadata by appending the field to the endpoint URL (e.g. http://metadata.google.internal/computeMetadata/v1/instance/id), 
+#this will return just the specific field requested in the endpoint
