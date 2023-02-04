@@ -39,3 +39,4 @@ key = "a/b/c"
 value = get_value_from_nested_object(object, key)
 print(value)
 # Output: None
+
