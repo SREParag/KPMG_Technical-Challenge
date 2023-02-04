@@ -1,0 +1,52 @@
+provider "google" {
+  project = "my-project-id"
+  region  = "us-central1"
+}
+resource "google_compute_network" "network" {
+  name = "my-network"
+}
+
+resource "google_compute_subnetwork" "web-tier" {
+  name          = "web-tier"
+  ip_cidr_range = "10.0.1.0/24"
+  network       = google_compute_network.network.self_link
+}
+
+resource "google_compute_subnetwork" "db-tier" {
+  name          = "db-tier"
+  ip_cidr_range = "10.0.2.0/24"
+  network       = google_compute_network.network.self_link
+}
+resource "google_compute_instance" "web-tier" {
+  name         = "web-tier"
+  machine_type = "f1-micro"
+  zone         = "us-central1-a"
+
+  network_interface {
+    network = google_compute_network.network.name
+    subnetwork = google_compute_subnetwork.web-tier.name
+  }
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+}
+
+resource "google_compute_instance" "db-tier" {
+  name         = "db-tier"
+  machine_type = "f1-micro"
+  zone         = "us-central1-a"
+
+  network_interface {
+    network = google_compute_network.network.name
+    subnetwork = google_compute_subnetwork.db-tier.name
+  }
+
+  boot_disk {
+    initialize_params {
+      image = "centos-cloud/centos-7"
+    }
+  }
+}
